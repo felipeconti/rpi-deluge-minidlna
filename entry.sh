@@ -16,13 +16,9 @@ if [ ! -d $DATADIR ]; then
         exit 1
 fi
 
-# Check if the authentication file exists.
+# Check if need to initialize
 if [ ! -f $CONFIGDIR/auth ]; then
-        AUTHMISSING=true
-fi
-
-if [ $AUTHMISSING ]; then
-        echo "Doing initial setup."
+        echo "Initial setup..."
         # Starting deluge
         deluged -c $CONFIGDIR
 
@@ -47,9 +43,11 @@ if [ $AUTHMISSING ]; then
         echo deluge:deluge:10 >> $CONFIGDIR/auth
 fi
 
-echo "Starting minidlna."
+echo "Starting minidlna..."
 minidlnad -f /etc/minidlna.conf
 
-echo "Starting deluged and deluge-web."
+echo "Starting deluged and deluge-web..."
 deluged -c /config
 deluge-web -c /config
+
+echo "All running!"
