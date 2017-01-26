@@ -1,12 +1,10 @@
 #!/bin/bash
 
 CONFIGDIR=/config
-DELUGECONFIGDIR=$CONFIGDIR/deluge
 DATADIR=/data
 
 echo "Creating config and data directories."
 mkdir -p $CONFIGDIR
-mkdir -p $DELUGECONFIGDIR
 mkdir -p $DATADIR
 
 if [ ! -d $CONFIGDIR ]; then
@@ -19,34 +17,34 @@ if [ ! -d $DATADIR ]; then
 fi
 
 # Check if the authentication file exists.
-if [ ! -f $DELUGECONFIGDIR/auth ]; then
+if [ ! -f $CONFIGDIR/auth ]; then
         AUTHMISSING=true
 fi
 
 if [ $AUTHMISSING ]; then
         echo "Doing initial setup."
         # Starting deluge
-        deluged -c $DELUGECONFIGDIR
+        deluged -c $CONFIGDIR
 
         # Wait until auth file created.
-        while [ ! -f $DELUGECONFIGDIR/auth ]; do
+        while [ ! -f $CONFIGDIR/auth ]; do
                 sleep 1
         done
 
         # allow remote access
-        deluge-console -c $DELUGECONFIGDIR "config -s allow_remote True"
+        deluge-console -c $CONFIGDIR "config -s allow_remote True"
 
         # setup default paths to go to the user's defined data folder.
-        deluge-console -c $DELUGECONFIGDIR "config -s download_location $DATADIR"
-        deluge-console -c $DELUGECONFIGDIR "config -s torrentfiles_location $DATADIR"
-        deluge-console -c $DELUGECONFIGDIR "config -s move_completed_path $DATADIR"
-        deluge-console -c $DELUGECONFIGDIR "config -s autoadd_location $DATADIR"
+        deluge-console -c $CONFIGDIR "config -s download_location $DATADIR"
+        deluge-console -c $CONFIGDIR "config -s torrentfiles_location $DATADIR"
+        deluge-console -c $CONFIGDIR "config -s move_completed_path $DATADIR"
+        deluge-console -c $CONFIGDIR "config -s autoadd_location $DATADIR"
 
         # Stop deluged.
         pkill deluged
 
         echo "Adding initial authentication details."
-        echo deluge:deluge:10 >> $DELUGECONFIGDIR/auth
+        echo deluge:deluge:10 >> $CONFIGDIR/auth
 fi
 
 echo "Starting minidlna."
