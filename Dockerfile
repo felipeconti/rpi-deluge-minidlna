@@ -17,11 +17,8 @@ RUN sed -i 's/#root_container=./root_container=V/' /etc/minidlna.conf
 RUN sed -i 's/#friendly_name=/friendly_name=Movies/' /etc/minidlna.conf
 RUN sed -i 's/#inotify=yes/inotify=yes/' /etc/minidlna.conf
 
-# Deluge
+# Deluge and MiniDLNA
 EXPOSE 58846 8112 8200
-
-# MiniDLNA
-EXPOSE 8200
 
 VOLUME /config
 VOLUME /data
