@@ -1,16 +1,14 @@
 FROM resin/rpi-raspbian:jessie
 MAINTAINER Felipe Bonvicini Conti <felipeconti18@gmail.com>
 
-RUN apt-get update
-RUN apt-get upgrade -y
-
-RUN apt-get install -qy deluged deluge-web deluge-console
-RUN apt-get install -y minidlna
-
-RUN apt-get -y clean
-RUN apt-get -y autoclean
-RUN apt-get -y autoremove
-RUN rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get update && \
+  apt-get upgrade -y && \
+  apt-get install -qy deluged deluge-web deluge-console && \
+  apt-get install -y minidlna && \
+  apt-get -y clean && \
+  apt-get -y autoclean && \
+  apt-get -y autoremove && \
+  rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN sed -i 's/media_dir=\/var\/lib\/minidlna/media_dir=\/data/' /etc/minidlna.conf
 RUN sed -i 's/#root_container=./root_container=V/' /etc/minidlna.conf
